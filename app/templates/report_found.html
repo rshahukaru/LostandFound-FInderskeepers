@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Report Found Item{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Report Found Item</h1>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="title" class="form-label">Item Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-control" id="category" name="category" required>
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+                <option value="documents">Documents</option>
+                <option value="accessories">Accessories</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required 
+                      placeholder="Please provide detailed description of the item including color, brand, distinguishing features, etc."></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location Found</label>
+            <input type="text" class="form-control" id="location" name="location" required
+                   placeholder="Where did you find the item?">
+        </div>
+        <div class="mb-3">
+            <label for="date_found" class="form-label">Date Found</label>
+            <input type="date" class="form-control" id="date_found" name="date_found" required>
+        </div>
+        <div class="mb-3">
+            <div class="form-text">
+                <strong>Note:</strong> By submitting this form, you agree to hold onto the item until the rightful owner claims it or until further notice.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Report Found Item</button>
+        <a href="{{ url_for('main.index') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .form-text {
+        margin-top: 1rem;
+        padding: 10px;
+        background-color: #e9ecef;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}

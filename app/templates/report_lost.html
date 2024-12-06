@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Report Lost Item{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Report Lost Item</h1>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="title" class="form-label">Item Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-control" id="category" name="category" required>
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+                <option value="documents">Documents</option>
+                <option value="accessories">Accessories</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location Lost</label>
+            <input type="text" class="form-control" id="location" name="location" required>
+        </div>
+        <div class="mb-3">
+            <label for="date_lost" class="form-label">Date Lost</label>
+            <input type="date" class="form-control" id="date_lost" name="date_lost" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Report Lost Item</button>
+    </form>
+</div>
+{% endblock %}
