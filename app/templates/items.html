@@ -3,46 +3,61 @@
 {% block title %}Items{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1 class="mb-4">Lost and Found Items</h1>
-    
-    <div class="filters mb-4">
-        <form method="GET" class="row g-3">
-            <div class="col-md-4">
-                <select class="form-select" name="type" onchange="this.form.submit()">
-                    <option value="all" {% if type_filter == 'all' %}selected{% endif %}>All Items</option>
-                    <option value="lost" {% if type_filter == 'lost' %}selected{% endif %}>Lost Items</option>
-                    <option value="found" {% if type_filter == 'found' %}selected{% endif %}>Found Items</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <select class="form-select" name="category" onchange="this.form.submit()">
-                    <option value="all" {% if category == 'all' %}selected{% endif %}>All Categories</option>
-                    <option value="electronics" {% if category == 'electronics' %}selected{% endif %}>Electronics</option>
-                    <option value="clothing" {% if category == 'clothing' %}selected{% endif %}>Clothing</option>
-                    <option value="documents" {% if category == 'documents' %}selected{% endif %}>Documents</option>
-                    <option value="accessories" {% if category == 'accessories' %}selected{% endif %}>Accessories</option>
-                    <option value="other" {% if category == 'other' %}selected{% endif %}>Other</option>
-                </select>
-            </div>
+<div class="p-6">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold mb-4 md:mb-0">Lost and Found Items</h1>
+        
+        <form method="GET" class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+            <select name="type" onchange="this.form.submit()" class="px-4 py-2 border rounded-lg">
+                <option value="all" {% if type_filter == 'all' %}selected{% endif %}>All Items</option>
+                <option value="lost" {% if type_filter == 'lost' %}selected{% endif %}>Lost Items</option>
+                <option value="found" {% if type_filter == 'found' %}selected{% endif %}>Found Items</option>
+            </select>
+            
+            <select name="category" onchange="this.form.submit()" class="px-4 py-2 border rounded-lg">
+                <option value="all" {% if category == 'all' %}selected{% endif %}>All Categories</option>
+                <option value="electronics" {% if category == 'electronics' %}selected{% endif %}>Electronics</option>
+                <option value="clothing" {% if category == 'clothing' %}selected{% endif %}>Clothing</option>
+                <option value="documents" {% if category == 'documents' %}selected{% endif %}>Documents</option>
+                <option value="accessories" {% if category == 'accessories' %}selected{% endif %}>Accessories</option>
+                <option value="other" {% if category == 'other' %}selected{% endif %}>Other</option>
+            </select>
         </form>
     </div>
 
-    <div class="row">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for item in items %}
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ item.title }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ item.category }}</h6>
-                    <p class="card-text">{{ item.description[:100] }}...</p>
-                    <p class="card-text"><small class="text-muted">{{ item.location }}</small></p>
-                    <p class="card-text"><small class="text-muted">{{ item.date_reported.strftime('%Y-%m-%d') }}</small></p>
-                    <a href="{{ url_for('main.item_detail', id=item.id) }}" class="btn btn-primary">View Details</a>
+        <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="px-2 py-1 rounded text-sm {{ 'bg-red-100 text-red-800' if item.type == 'lost' else 'bg-green-100 text-green-800' }}">
+                        {{ item.type.upper() }}
+                    </span>
+                    <span class="text-sm text-gray-500">{{ item.date_reported.strftime('%Y-%m-%d') }}</span>
+                </div>
+                
+                <h3 class="text-lg font-semibold mb-2">{{ item.title }}</h3>
+                <p class="text-gray-600 text-sm mb-4">{{ item.description[:100] }}...</p>
+                
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-500">{{ item.location }}</span>
+                    <a href="{{ url_for('main.item_detail', id=item.id) }}" 
+                       class="inline-flex items-center text-blue-600 hover:text-blue-800">
+                        View Details
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
+
+    {% if not items %}
+    <div class="text-center py-12">
+        <p class="text-gray-500">No items found matching your criteria.</p>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

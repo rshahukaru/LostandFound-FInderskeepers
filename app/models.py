@@ -33,8 +33,8 @@ class Item(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     location = db.Column(db.String(200))
-    date_lost_found = db.Column(db.DateTime, nullable=False)
-    date_reported = db.Column(db.DateTime, default=datetime.utcnow)
+    date_lost_found = db.Column(db.DateTime(timezone=True), nullable=False)
+    date_reported = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     status = db.Column(db.String(20), default='active')
     image_filename = db.Column(db.String(255))
 

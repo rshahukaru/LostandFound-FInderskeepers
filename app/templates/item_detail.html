@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto p-6">
+    <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex justify-between items-start mb-6">
+            <span class="px-3 py-1 rounded-full text-sm {{ 'bg-red-100 text-red-800' if item.type == 'lost' else 'bg-green-100 text-green-800' }}">
+                {{ item.type.upper() }}
+            </span>
+            <span class="text-gray-500">Posted {{ item.date_reported.strftime('%Y-%m-%d') }}</span>
+        </div>
+
+        <h1 class="text-2xl font-bold mb-4">{{ item.title }}</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+                <h3 class="text-sm font-medium text-gray-500">Category</h3>
+                <p class="mt-1">{{ item.category }}</p>
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-500">Location</h3>
+                <p class="mt-1">{{ item.location }}</p>
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-500">Date {{ item.type.capitalize() }}</h3>
+                <p class="mt-1">{{ item.date_lost_found.strftime('%Y-%m-%d') }}</p>
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-500">Status</h3>
+                <p class="mt-1">{{ item.status.capitalize() }}</p>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <h3 class="text-sm font-medium text-gray-500 mb-2">Description</h3>
+            <p class="text-gray-700 whitespace-pre-line">{{ item.description }}</p>
+        </div>
+
+        {% if current_user.is_authenticated and item.user_id != current_user.id %}
+            <div class="border-t pt-6">
+                <h3 class="text-lg font-medium mb-4">Contact Owner</h3>
+                <form method="POST" action="{{ url_for('main.create_claim', item_id=item.id) }}" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Proof/Details</label>
+                        <textarea name="proof_description" rows="3" required
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                placeholder="Please provide details to verify ownership"></textarea>
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                        Submit Claim
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -14,8 +14,12 @@ class Config:
     DB_PASS = os.environ.get('AZURE_SQL_PASSWORD')
     
     SQLALCHEMY_DATABASE_URI = (
-        f"mssql+pyodbc://{DB_USER}:{DB_PASS}@{DB_SERVER}"
-        f"/{DB_NAME}?driver=ODBC+Driver+18+for+SQL+Server"
-        "&encrypt=yes&TrustServerCertificate=yes"
-    )
+    f"mssql+pyodbc://{DB_USER}:{DB_PASS}@{DB_SERVER}"
+    f"/{DB_NAME}?driver=ODBC+Driver+18+for+SQL+Server"
+    "&encrypt=yes&TrustServerCertificate=yes"
+    "&connection_timeout=30"
+    "&connect_timeout=30"
+    "&connect_retry_count=5"
+    "&keep_alive=yes"
+)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
