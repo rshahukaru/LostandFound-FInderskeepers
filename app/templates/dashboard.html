@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Your Matches</h1>
+    
+    {% if matches %}
+        <ul class="divide-y divide-gray-200">
+        {% for match in matches %}
+            <li class="p-4">
+                <h2 class="text-lg font-semibold mb-2">Match #{{ loop.index }}</h2>
+                <p><strong>Lost Item:</strong> {{ match.lost_item.title }} - {{ match.lost_item.description }}</p>
+                <p><strong>Found Item:</strong> {{ match.found_item.title }} - {{ match.found_item.description }}</p>
+                <p><strong>Location:</strong> {{ match.lost_item.location }}</p>
+                <p><strong>Date Reported:</strong> {{ match.lost_item.date_reported.strftime('%Y-%m-%d') }}</p>
+                <a href="#" class="text-blue-600 hover:underline">Contact Finder</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600">You have no matches yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

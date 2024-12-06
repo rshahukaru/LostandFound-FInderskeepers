@@ -1,17 +1,31 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from app.models import Item
+from app.models import Item, Match
 from app import db
 from datetime import datetime, date
 from app.forms import LostItemForm, FoundItemForm
+from app.utils import find_matches
 
 main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
+    # Fetch recent lost and found items
     lost_items = Item.query.filter_by(type='lost').order_by(Item.date_reported.desc()).limit(5).all()
     found_items = Item.query.filter_by(type='found').order_by(Item.date_reported.desc()).limit(5).all()
-    return render_template('index.html', lost_items=lost_items, found_items=found_items)
+    
+    # Fetch matches for the current user if authenticated
+    matches = None
+    if current_user.is_authenticated:
+        matches = Match.query.filter(
+            (Match.lost_item_id == current_user.id) |
+            (Match.found_item_id == current_user.id)
+        ).all()
+    
+    # Pass data to the template
+    return render_template('index.html', lost_items=lost_items, found_items=found_items, matches=matches)
+
+
 
 @main.route('/lost', methods=['GET', 'POST'])
 @login_required
@@ -75,3 +89,12 @@ def list_items():
 def item_detail(id):
     item = Item.query.get_or_404(id)
     return render_template('item_detail.html', item=item)
+
+@main.route('/dashboard')
+@login_required
+def dashboard():
+    matches = Match.query.filter(
+        (Match.lost_item_id == current_user.id) |
+        (Match.found_item_id == current_user.id)
+    ).all()
+    return render_template('dashboard.html', matches=matches)

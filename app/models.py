@@ -41,14 +41,6 @@ class Item(db.Model):
     # Relationships
     claims = db.relationship('Claim', backref='item', lazy='dynamic')
 
-class Match(db.Model):
-    __tablename__ = 'Matches'
-    id = db.Column(db.Integer, primary_key=True)
-    lost_item_id = db.Column(db.Integer, db.ForeignKey('Items.id'))
-    found_item_id = db.Column(db.Integer, db.ForeignKey('Items.id'))
-    status = db.Column(db.String(20), default='pending')
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
 class Claim(db.Model):
     __tablename__ = 'Claims'
     id = db.Column(db.Integer, primary_key=True)
@@ -68,3 +60,15 @@ class Notification(db.Model):
     message = db.Column(db.Text, nullable=False)
     is_read = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Match(db.Model):
+    __tablename__ = 'Matches'
+    id = db.Column(db.Integer, primary_key=True)
+    lost_item_id = db.Column(db.Integer, db.ForeignKey('Items.id'), nullable=False)
+    found_item_id = db.Column(db.Integer, db.ForeignKey('Items.id'), nullable=False)
+    status = db.Column(db.String(20), default='pending')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+     # Relationships
+    lost_item = db.relationship('Item', foreign_keys=[lost_item_id])
+    found_item = db.relationship('Item', foreign_keys=[found_item_id])

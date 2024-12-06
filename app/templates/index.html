@@ -40,4 +40,11 @@
         </a>
     </div>
 </div>
+
+{% if current_user.is_authenticated and matches %}
+    <div class="alert alert-info">
+        You have {{ matches|length }} new matches for your items! <a href="{{ url_for('main.dashboard') }}">View your matches</a>
+
+    </div>
+{% endif %}
 {% endblock %}
