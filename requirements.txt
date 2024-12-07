@@ -1,3 +1,5 @@
+setuptools
+wheel
 azure-core>=1.32.0
 azure-identity>=1.19.0
 azure_sql>=1.10
